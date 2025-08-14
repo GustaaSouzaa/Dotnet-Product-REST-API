@@ -1,0 +1,6 @@
+@ProvaTecnica_HostAddress = http://localhost:5212
+
+GET {{ProvaTecnica_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
