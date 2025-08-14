@@ -2,6 +2,8 @@
 using ProvaTecnica.Data;
 using ProvaTecnica.Models;
 using Microsoft.EntityFrameworkCore;
+using ProvaTecnica.DTOs;
+using ProvaTecnica.Services;
 
 namespace ProvaTecnica.Controllers
 {
@@ -9,27 +11,24 @@ namespace ProvaTecnica.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IProdutoService _produtoService;
 
-        public ProdutoController(AppDbContext context)
+        public ProdutoController(IProdutoService produtoService)
         {
-            _context = context;
+            _produtoService = produtoService;
         }
 
-        // Endpoint GET /api/produto
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetProdutos()
+        public async Task<ActionResult<IEnumerable<ProdutoGetDTO>>> GetProdutos()
         {
-            return await _context.Produtos.ToListAsync();
+            var produtos = await _produtoService.GetProdutosAsync();
+            return Ok(produtos);
         }
 
-        // Endpoint POST /api/produto
         [HttpPost]
-        public async Task<ActionResult<Produto>> PostProduto(Produto produto)
+        public async Task<ActionResult<Produto>> PostProduto(ProdutoPostDTO produtoDto)
         {
-            _context.Produtos.Add(produto);
-            await _context.SaveChangesAsync();
-
+            var produto = await _produtoService.PostProdutoAsync(produtoDto);
             return CreatedAtAction(nameof(GetProdutos), new { id = produto.Id }, produto);
         }
     }
