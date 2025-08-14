@@ -30,6 +30,6 @@ namespace ProvaTecnica.Controllers
         {
             var produto = await _produtoService.PostProdutoAsync(produtoDto);
             return CreatedAtAction(nameof(GetProdutos), new { id = produto.Id }, produto);
-        }
+        }   
     }
 }
